@@ -13,9 +13,6 @@ LawGPT is a Large Language Model (LLM) based chatbot designed to provide legal i
 - [Usage](#usage)
 - [Deployed Website](#deployed-website)
 
-## Demo Video
-
-https://github.com/itsmesneha/Legal-CHATBOT/assets/87040207/83741dc0-1b0f-43b6-a13e-c35046b831e0
 
 ## Introduction
 
