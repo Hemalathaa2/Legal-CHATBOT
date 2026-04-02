@@ -1,12 +1,15 @@
 import streamlit as st
 import os
 import time
+
 from langchain_community.vectorstores import FAISS
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from langchain_core.prompts import PromptTemplate
 from langchain_groq import ChatGroq
-from langchain.memory import ConversationBufferWindowMemory
-from langchain.chains import ConversationalRetrievalChain
+
+from langchain.memory.buffer_window import ConversationBufferWindowMemory
+from langchain.chains.conversational_retrieval.base import ConversationalRetrievalChain
+
 from dotenv import load_dotenv
 st.set_page_config(
     page_title="IPC Legal Chatbot",
@@ -17,9 +20,9 @@ st.set_page_config(
 
 # Set up environment variables
 load_dotenv()
-os.environ['GOOGLE_API_KEY'] = "AIzaSyCEFF9O6BMpGo-CL7sZQAjC1Wht3ftyTPY"
-
-groq_api_key = os.getenv("GROQ_API_KEY")
+os.environ["GOOGLE_API_KEY"] = os.getenv("GOOGLE_API_KEY")
+llm = ChatGroq(api_key=os.getenv("GROQ_API_KEY"),
+               model_name="llama3-70b-8192")
 
 # Streamlit UI setup
 st.title(" Indian Penal Code ChatBot")
@@ -124,17 +127,17 @@ if input_prompt:
 
     with st.chat_message("assistant"):
         with st.status("Thinking 💡...", expanded=True):
-            result = qa.invoke(input=input_prompt)
+            result = qa.invoke({"question": input_prompt})
             message_placeholder = st.empty()
             full_response = "\n\n\n"
 
             # Print the result dictionary to inspect its structure
             #st.write(result)
 
-            for chunk in result["answer"]:
-                full_response += chunk
-                time.sleep(0.02)
-                message_placeholder.markdown(full_response + " ▌")
+            #for chunk in result["answer"]:
+            full_response = result["answer"]
+            time.sleep(0.02)
+            message_placeholder.markdown(full_response + " ▌")
 
             # Print the answer
             #st.write(result["answer"])
