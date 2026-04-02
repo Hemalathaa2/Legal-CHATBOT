@@ -4,11 +4,11 @@ import time
 
 from langchain_community.vectorstores import FAISS
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
-from langchain_core.prompts import PromptTemplate
+from langchain.prompts import PromptTemplate
 from langchain_groq import ChatGroq
 
-from langchain.memory.buffer_window import ConversationBufferWindowMemory
-from langchain.chains.conversational_retrieval.base import ConversationalRetrievalChain
+from langchain.memory import ConversationBufferWindowMemory
+from langchain.chains import ConversationalRetrievalChain
 
 from dotenv import load_dotenv
 st.set_page_config(
@@ -23,7 +23,7 @@ load_dotenv()
 os.environ["GOOGLE_API_KEY"] = os.getenv("GOOGLE_API_KEY")
 llm = ChatGroq(api_key=os.getenv("GROQ_API_KEY"),
                model_name="llama3-70b-8192")
-
+groq_api_key=os.getenv("GROQ_API_KEY")
 # Streamlit UI setup
 st.title(" Indian Penal Code ChatBot")
 st.markdown("🔍 Ask any question related to the Indian Penal Code and get instant answers.")
@@ -101,7 +101,7 @@ ANSWER:
 prompt = PromptTemplate(template=prompt_template, input_variables=['context', 'question', 'chat_history'])
 
 # Initialize the LLM
-llm = ChatGroq(groq_api_key="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", model_name="llama3-70b-8192")
+
 
 # Set up the QA chain
 qa = ConversationalRetrievalChain.from_llm(
